@@ -1,0 +1,1 @@
+export interface ICreateCompany {name: string, cnpj: string, email: string }
