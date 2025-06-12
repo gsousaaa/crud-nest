@@ -29,10 +29,16 @@ export class UserService {
     }
 
     async update(fields: Partial<User>, id: number) {
+        const existsUser = await this.userRepository.findOne({ where: { id } })
+        if (!existsUser) throw new NotFoundException('Usuario não encontrado!')
+
         return await this.userRepository.update({ id }, fields)
     }
 
     async delete(id: number) {
+        const existsUser = await this.userRepository.findOne({ where: { id } })
+        if (!existsUser) throw new NotFoundException('Usuario não encontrado!')
+
         return this.userRepository.delete(id)
     }
 }
