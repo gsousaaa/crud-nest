@@ -4,6 +4,7 @@ import { User } from 'src/entities/user.entity';
 import { ICreateUser } from 'src/types/ICreateUser';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt'
+import { PaginationDto } from '../dto/pagination-dto';
 @Injectable()
 export class UserService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>) { }
@@ -16,14 +17,14 @@ export class UserService {
         return await this.userRepository.save({ ...data, password: await bcrypt.hash(data.password, 10) })
     }
 
-    async findAll(pagination: { offset: number, limit: number }) {
-        return await this.userRepository.find({ take: pagination.limit, skip: pagination.offset })
+    async findAll(pagination: PaginationDto) {
+        return await this.userRepository.find({ take: pagination.limit, skip: (pagination.page - 1) * pagination.limit })
     }
 
     async findOne(id: number) {
         const user = await this.userRepository.findOne({ where: { id } })
-        if(!user) throw new NotFoundException('Usuario não encontrado!')
-            
+        if (!user) throw new NotFoundException('Usuario não encontrado!')
+
         return user
     }
 

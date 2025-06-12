@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UserService } from './user.service';
-import { User } from 'src/entities/user.entity';
 import { UpdateUserDto } from './dto/update-user-dto';
+import { PaginationDto } from '../dto/pagination-dto';
 
 @Controller('users')
 export class UserController {
@@ -20,8 +20,8 @@ export class UserController {
     }
 
     @Get()
-    findAll(@Query() pagination: any) {
-        const { limit = 10, offset = 0 } = pagination
+    findAll(@Query() pagination: PaginationDto) {
+        const { limit = 10, page = 1 } = pagination
 
         return this.userService.findAll(pagination)
     }
