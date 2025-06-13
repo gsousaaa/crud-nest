@@ -14,7 +14,7 @@ export class CompanyController {
         return this.companyService.create(data)
     }
 
-    @Get()
+    @Get(':id')
     findOne(@Param('id', ParseIntPipe) id: number) {
         return this.companyService.findOne(id)
     }
