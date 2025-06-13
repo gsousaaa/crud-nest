@@ -10,7 +10,6 @@ export class CompanyService {
 
     async create(data: ICreateCompany) {
         const existsCompany = await this.companyRepository.findOne({ where: { cnpj: data.cnpj } })
-
         if (existsCompany) throw new Error('Empresa já cadastrado!')
 
         return await this.companyRepository.save(data)
@@ -21,16 +20,16 @@ export class CompanyService {
     }
 
     async findOne(id: number) {
-        const user = await this.companyRepository.findOne({ where: { id } })
-        if (!user) throw new NotFoundException('Usuario não encontrado!')
+        const company = await this.companyRepository.findOne({ where: { id } })
+        if (!company) throw new NotFoundException('Empresa não encontrada!')
 
-        return user
+        return company
     }
 
     async update(fields: Partial<Company>, id: number) {
         const existsCompany = await this.companyRepository.findOne({ where: { id } })
         if (!existsCompany) throw new NotFoundException(`Empresa não encontrada!`)
-            
+
         return await this.companyRepository.update({ id }, fields)
     }
 
